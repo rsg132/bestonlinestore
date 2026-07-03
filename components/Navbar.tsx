@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Navbar() {
   return (
     <nav className="w-full shadow-md bg-white">
@@ -8,11 +10,12 @@ export default function Navbar() {
         </h1>
 
         <ul className="flex gap-8 font-medium">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Categories</a></li>
-          <li><a href="#">Products</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/categories">Categories</Link></li>
+          <li><Link href="/products">Products</Link></li>
+          <li><Link href="/about">About</Link></li>
+          <li><Link href="/contact">Contact</Link></li>
+          <li><Link href="/cart">Cart</Link></li>
         </ul>
 
         <button className="bg-green-700 text-white px-5 py-2 rounded-lg hover:bg-green-800">

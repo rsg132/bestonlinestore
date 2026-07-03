@@ -1,4 +1,7 @@
+"use client";
+
 import Link from 'next/link';
+import { useCart } from '@/components/CartProvider';
 
 const featuredProducts = [
   {
@@ -40,6 +43,12 @@ const featuredProducts = [
 ];
 
 export default function FeaturedProducts() {
+  const { addItem } = useCart();
+
+  function handleAdd(product: { id: number; name: string; price: number }) {
+    addItem({ id: product.id, name: product.name, price: product.price });
+  }
+
   return (
     <section className="py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -68,7 +77,10 @@ export default function FeaturedProducts() {
                 <p className="mt-3 text-slate-600">{product.description}</p>
                 <div className="mt-5 flex items-center justify-between gap-4">
                   <span className="text-2xl font-bold text-slate-900">${product.price}</span>
-                  <button className="rounded-full bg-green-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-800">
+                  <button
+                    onClick={() => handleAdd(product)}
+                    className="rounded-full bg-green-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-800"
+                  >
                     Add to Cart
                   </button>
                 </div>
