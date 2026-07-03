@@ -1,27 +1,78 @@
 import Link from 'next/link';
 
 const featuredProducts = [
-  { id: 1, name: 'Smart Headphones', price: 89 },
-  { id: 2, name: 'Minimal Backpack', price: 59 },
-  { id: 3, name: 'Cozy Hoodie', price: 45 },
+  {
+    id: 1,
+    name: 'Smart Headphones',
+    price: 89,
+    description: 'Noise-canceling sound for music lovers.',
+  },
+  {
+    id: 2,
+    name: 'Minimal Backpack',
+    price: 59,
+    description: 'Durable design with multiple storage pockets.',
+  },
+  {
+    id: 3,
+    name: 'Cozy Hoodie',
+    price: 45,
+    description: 'Soft fabric for everyday comfort.',
+  },
+  {
+    id: 4,
+    name: 'Wireless Speaker',
+    price: 48,
+    description: 'Portable audio for home and travel.',
+  },
+  {
+    id: 5,
+    name: 'Smart Watch',
+    price: 75,
+    description: 'Track fitness and stay connected on the go.',
+  },
+  {
+    id: 6,
+    name: 'Sunglasses Set',
+    price: 34,
+    description: 'Stylish protection with multiple lens colors.',
+  },
 ];
 
 export default function FeaturedProducts() {
   return (
-    <section style={{ padding: '32px 0' }}>
-      <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h2>Featured Products</h2>
-          <Link href="/cart" style={{ color: '#2563eb' }}>View Cart</Link>
+    <section className="py-20 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 className="text-4xl font-bold">Featured Products</h2>
+            <p className="mt-3 max-w-2xl text-slate-600">
+              Browse our top picks with live visuals, pricing, and an add-to-cart button under every product.
+            </p>
+          </div>
+          <Link href="/cart" className="inline-flex rounded-full bg-green-700 px-6 py-3 text-sm font-semibold text-white hover:bg-green-800">
+            View Cart
+          </Link>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
+
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {featuredProducts.map((product) => (
-            <div key={product.id} style={{ background: '#fff', padding: '20px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(15,23,42,0.08)' }}>
-              <h3>{product.name}</h3>
-              <p style={{ color: '#6b7280' }}>${product.price}</p>
-              <button style={{ marginTop: '12px', padding: '10px 16px', borderRadius: '999px', background: '#f59e0b', color: '#fff', border: 'none', cursor: 'pointer' }}>
-                Add to Cart
-              </button>
+            <div key={product.id} className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-lg">
+              <img
+                src={`https://picsum.photos/seed/product${product.id}/640/480`}
+                alt={product.name}
+                className="h-56 w-full object-cover"
+              />
+              <div className="p-6">
+                <h3 className="text-2xl font-semibold">{product.name}</h3>
+                <p className="mt-3 text-slate-600">{product.description}</p>
+                <div className="mt-5 flex items-center justify-between gap-4">
+                  <span className="text-2xl font-bold text-slate-900">${product.price}</span>
+                  <button className="rounded-full bg-green-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-800">
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
