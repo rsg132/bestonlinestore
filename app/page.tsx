@@ -11,3 +11,10 @@ export default function Home() {
     </>
   );
 }
+import Categories from "@/components/Categories";
+<>
+  <Navbar />
+  <Hero />
+  <Categories />
+  <Footer />
+</>
