@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useCart } from '@/components/CartProvider';
+import { useEffect, useState } from 'react';
 
 const featuredProducts = [
   {
@@ -44,10 +45,18 @@ const featuredProducts = [
 
 export default function FeaturedProducts() {
   const { addItem } = useCart();
+  const [message, setMessage] = useState<string | null>(null);
 
   function handleAdd(product: { id: number; name: string; price: number }) {
     addItem({ id: product.id, name: product.name, price: product.price });
+    setMessage(`${product.name} added to cart.`);
   }
+
+  useEffect(() => {
+    if (!message) return;
+    const timeout = window.setTimeout(() => setMessage(null), 2500);
+    return () => window.clearTimeout(timeout);
+  }, [message]);
 
   return (
     <section className="py-20 bg-slate-50">
@@ -58,12 +67,16 @@ export default function FeaturedProducts() {
             <p className="mt-3 max-w-2xl text-slate-600">
               Browse our top picks with live visuals, pricing, and an add-to-cart button under every product.
             </p>
+            {message ? (
+              <div className="mt-4 inline-flex rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-800 shadow-sm" aria-live="polite">
+                {message}
+              </div>
+            ) : null}
           </div>
           <Link href="/cart" className="inline-flex rounded-full bg-green-700 px-6 py-3 text-sm font-semibold text-white hover:bg-green-800">
             View Cart
           </Link>
         </div>
-
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {featuredProducts.map((product) => (
             <div key={product.id} className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-lg">

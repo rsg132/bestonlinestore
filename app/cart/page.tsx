@@ -36,7 +36,7 @@ export default function CartPage() {
     setStatus("");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/checkout", {
+      const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
