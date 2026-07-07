@@ -41,10 +41,46 @@ const featuredProducts = [
     price: 34,
     description: 'Stylish protection with multiple lens colors.',
   },
+  {
+    id: 7,
+    name: 'Pizza Combo',
+    price: 29,
+    description: 'Hot pizza with cheesy toppings and sides.',
+  },
+  {
+    id: 8,
+    name: 'Burger Meal',
+    price: 24,
+    description: 'Juicy burger with fries and a drink.',
+  },
+  {
+    id: 9,
+    name: 'Express Delivery',
+    price: 12,
+    description: 'Fast home delivery for your purchases.',
+  },
+  {
+    id: 10,
+    name: 'Home Cleaning',
+    price: 65,
+    description: 'Professional cleaning service for your home.',
+  },
+  {
+    id: 11,
+    name: 'Coffee Pack',
+    price: 18,
+    description: 'Premium coffee blend with quick delivery.',
+  },
+  {
+    id: 12,
+    name: 'Movie Ticket',
+    price: 14,
+    description: 'Instant ticket booking for the latest films.',
+  },
 ];
 
 export default function FeaturedProducts() {
-  const { addItem } = useCart();
+  const { addItem, items, total } = useCart();
   const [message, setMessage] = useState<string | null>(null);
 
   function handleAdd(product: { id: number; name: string; price: number }) {
@@ -101,6 +137,27 @@ export default function FeaturedProducts() {
             </div>
           ))}
         </div>
+
+        {items.length > 0 ? (
+          <div className="mt-10 rounded-[28px] border border-slate-200 bg-white p-6 shadow-lg">
+            <h3 className="text-2xl font-semibold text-slate-900">Current cart</h3>
+            <div className="mt-4 space-y-4">
+              {items.map((item) => (
+                <div key={item.id} className="flex items-center justify-between rounded-3xl bg-slate-50 px-4 py-3">
+                  <div>
+                    <p className="font-semibold text-slate-900">{item.name}</p>
+                    <p className="text-sm text-slate-600">Qty: {item.quantity}</p>
+                  </div>
+                  <p className="font-semibold text-slate-900">${(item.price * item.quantity).toFixed(2)}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex items-center justify-between rounded-3xl bg-slate-950 px-5 py-4 text-white">
+              <span className="text-sm uppercase tracking-[0.24em] text-slate-300">Total</span>
+              <span className="text-3xl font-semibold">${total.toFixed(2)}</span>
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );

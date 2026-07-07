@@ -31,11 +31,9 @@ export default function Navbar() {
               ) : null}
             </Link>
           </li>
+          <li><Link href="/login" className="text-green-700 hover:text-green-800">Login</Link></li>
+          <li><Link href="/register" className="rounded-full border border-green-700 bg-green-700 px-4 py-2 text-white hover:bg-green-800">Register</Link></li>
         </ul>
-
-        <button className="bg-green-700 text-white px-5 py-2 rounded-lg hover:bg-green-800">
-          Login
-        </button>
 
       </div>
     </nav>

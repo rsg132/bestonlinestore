@@ -50,7 +50,14 @@ export default function CartPage() {
         }),
       });
 
-      const result = await response.json();
+      let result: { message?: string; status?: string } = { message: "Unexpected response from checkout." };
+      const text = await response.text();
+      try {
+        result = JSON.parse(text);
+      } catch {
+        result = { message: text || "Unable to parse backend response." };
+      }
+
       if (!response.ok) {
         setStatus(result.message || "Unable to send checkout order.");
       } else {

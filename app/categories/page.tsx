@@ -2,13 +2,48 @@
 
 import { useState } from "react";
 
-const categories = [
-  { name: "Electronics", description: "Shop phones, headphones, and smart devices." },
-  { name: "Fashion", description: "Discover trending clothing, shoes, and accessories." },
-  { name: "Home & Living", description: "Find home decor, kitchen gear, and furniture." },
-  { name: "Beauty", description: "Browse skincare, makeup, and personal care essentials." },
-  { name: "Sports", description: "Choose activewear, fitness gear, and outdoor equipment." },
-  { name: "Books", description: "Enjoy bestselling books, journals, and gift reads." },
+type CategoryItem = {
+  name: string;
+  description: string;
+  subcategories: string[];
+};
+
+const categories: CategoryItem[] = [
+  {
+    name: "Electronics",
+    description: "Shop phones, headphones, and smart devices.",
+    subcategories: ["Smartphones", "Audio", "Wearables"],
+  },
+  {
+    name: "Fashion",
+    description: "Discover trending clothing, shoes, and accessories.",
+    subcategories: ["Men's Wear", "Women's Wear", "Accessories"],
+  },
+  {
+    name: "Home & Living",
+    description: "Find home decor, kitchen gear, and furniture.",
+    subcategories: ["Decor", "Furniture", "Kitchen"],
+  },
+  {
+    name: "Beauty",
+    description: "Browse skincare, makeup, and personal care essentials.",
+    subcategories: ["Skincare", "Fragrance", "Haircare"],
+  },
+  {
+    name: "Sports",
+    description: "Choose activewear, fitness gear, and outdoor equipment.",
+    subcategories: ["Fitness", "Outdoor", "Equipment"],
+  },
+  {
+    name: "Fast Food",
+    description: "Order delicious pizza, burgers, and quick meals.",
+    subcategories: ["Pizza Combos", "Burger Meals", "Snacks"],
+  },
+  {
+    name: "Services",
+    description: "Book trusted service providers and delivery packages.",
+    subcategories: ["Home Cleaning", "Delivery", "Repairs"],
+  },
 ];
 
 export default function CategoriesPage() {
@@ -46,6 +81,16 @@ export default function CategoriesPage() {
           <p className="mt-4 text-slate-700">
             You are currently viewing <span className="font-bold text-slate-900">{activeCategory}</span>. Explore the latest products and collections designed for this category.
           </p>
+          <div className="mt-6 rounded-[28px] bg-slate-50 p-6">
+            <h3 className="text-xl font-semibold text-slate-900">Subcategories</h3>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {categories.find((category) => category.name === activeCategory)?.subcategories.map((sub) => (
+                <span key={sub} className="rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
+                  {sub}
+                </span>
+              ))}
+            </div>
+          </div>
         </section>
       </div>
     </main>

@@ -7,6 +7,12 @@ const categories = [
   "Books",
   "Groceries",
   "Automotive",
+  "Fast Food",
+  "Services",
+  "Plumber",
+  "Electrician",
+  "Health",
+  "Kids",
 ];
 
 export default function Categories() {

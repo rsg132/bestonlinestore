@@ -17,7 +17,7 @@ const products = [
   { name: "Fashion Sneakers", price: 62 },
 ];
 
-const notificationEmail = "orders@bestonlinestore.com";
+const notificationEmail = "bestonlinestore998@gmail.com";
 
 export default function HomepageForm() {
   const [name, setName] = useState("");

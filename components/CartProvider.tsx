@@ -19,7 +19,7 @@ type CartContextValue = {
 };
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
-const ADMIN_EMAIL = "orders@bestonlinestore.com";
+const ADMIN_EMAIL = "bestonlinestore998@gmail.com";
 
 function getInitialCart() {
   if (typeof window === "undefined") return [];

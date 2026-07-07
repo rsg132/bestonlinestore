@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useCart } from "@/components/CartProvider";
 
 const productList = [
   { id: 1, name: "Smart Headphones", price: 89 },
@@ -9,18 +10,32 @@ const productList = [
   { id: 4, name: "Wireless Speaker", price: 48 },
   { id: 5, name: "Smart Watch", price: 75 },
   { id: 6, name: "Sunglasses Set", price: 34 },
+  { id: 7, name: "Pizza Combo", price: 29 },
+  { id: 8, name: "Burger Meal", price: 24 },
+  { id: 9, name: "Express Delivery", price: 12 },
+  { id: 10, name: "Home Cleaning", price: 65 },
+  { id: 11, name: "Coffee Pack", price: 18 },
+  { id: 12, name: "Movie Ticket", price: 14 },
+  { id: 13, name: "Gaming Chair", price: 129 },
+  { id: 14, name: "Fashion Sneakers", price: 62 },
+  { id: 15, name: "Juice Bundle", price: 22 },
+  { id: 16, name: "Snack Box", price: 16 },
+  { id: 17, name: "Laptop Stand", price: 39 },
+  { id: 18, name: "Pet Care Kit", price: 28 },
 ];
 
 export default function ProductsPage() {
-  const [cartItems, setCartItems] = useState<number[]>([]);
-
-  const total = useMemo(
-    () => cartItems.reduce((sum, id) => sum + (productList.find((item) => item.id === id)?.price ?? 0), 0),
-    [cartItems]
+  const { items, total, addItem } = useCart();
+  const itemCount = useMemo(
+    () => items.reduce((sum, item) => sum + item.quantity, 0),
+    [items]
   );
 
   function addToCart(productId: number) {
-    setCartItems((current) => [...current, productId]);
+    const product = productList.find((item) => item.id === productId);
+    if (product) {
+      addItem(product);
+    }
   }
 
   return (
@@ -58,18 +73,19 @@ export default function ProductsPage() {
 
         <aside className="mt-14 rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <h2 className="text-2xl font-semibold">Cart summary</h2>
-          <p className="mt-3 text-slate-600">You have {cartItems.length} item(s) in your cart.</p>
+          <p className="mt-3 text-slate-600">You have {itemCount} item{itemCount === 1 ? "" : "s"} in your cart.</p>
           <p className="mt-2 text-xl font-bold">Total: ${total.toFixed(2)}</p>
-          {cartItems.length > 0 ? (
+          {items.length > 0 ? (
             <ul className="mt-6 space-y-3 text-slate-700">
-              {cartItems.map((itemId, index) => {
-                const product = productList.find((item) => item.id === itemId);
-                return (
-                  <li key={`${itemId}-${index}`}>
-                    {product?.name} — ${product?.price}
-                  </li>
-                );
-              })}
+              {items.map((item) => (
+                <li key={item.id} className="flex items-center justify-between rounded-3xl bg-slate-50 px-4 py-3">
+                  <div>
+                    <p className="font-semibold text-slate-900">{item.name}</p>
+                    <p className="text-sm text-slate-600">Qty: {item.quantity}</p>
+                  </div>
+                  <p className="font-semibold text-slate-900">${(item.price * item.quantity).toFixed(2)}</p>
+                </li>
+              ))}
             </ul>
           ) : (
             <p className="mt-6 text-slate-500">Add products from above to see them appear in your cart.</p>

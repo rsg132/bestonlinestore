@@ -20,7 +20,7 @@ export default function ContactPage() {
           <p className="text-sm uppercase tracking-[0.3em] text-green-700">Get in touch</p>
           <h1 className="mt-4 text-4xl font-bold">Contact</h1>
           <p className="mt-3 text-slate-600">
-            Send us a message and our team will respond soon. For urgent orders, we use {"orders@bestonlinestore.com"}.
+            Send us a message and our team will respond soon. For urgent orders, reach us at <span className="font-semibold text-slate-900">bestonlinestore998@gmail.com</span>.
           </p>
         </div>
 
