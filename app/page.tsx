@@ -1,49 +1,39 @@
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Categories from "@/components/Categories";
+import PromoBanner from "@/components/PromoBanner";
 import FeaturedProducts from "@/components/FeaturedProducts";
-import HomepageForm from "@/components/HomepageForm";
-import Footer from "@/components/Footer";
+import CategorySidebar from "@/components/CategorySidebar";
+import SubcategoryGrid from "@/components/SubcategoryGrid";
+import { promoBannerProducts, promoConfig } from "@/components/promo-data";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
       <Hero />
-
-      <section className="relative overflow-hidden bg-slate-950 text-white">
-        <div className="absolute inset-0 opacity-50 bg-gradient-to-r from-slate-950 via-transparent to-slate-950"></div>
-        <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-28">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-emerald-400">Live market showcase</p>
-              <h2 className="mt-4 text-4xl font-bold sm:text-5xl">
-                Watch the marketplace in action
-              </h2>
-              <p className="mt-4 max-w-2xl text-slate-300">
-                A short looped market video gives shoppers a quick feel for the store, the products, and the energy behind Best Online Store.
-              </p>
+      
+      {/* Categories Section with Sidebar */}
+      <section className="bg-gray-50 py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row gap-6">
+            {/* Sidebar - Hidden on mobile, visible from sm */}
+            <div className="hidden sm:block">
+              <CategorySidebar selectedCategory="electronics" />
             </div>
-            <div className="overflow-hidden rounded-[28px] border border-white/10 shadow-2xl">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full object-cover"
-              >
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-street-food-vendor-645-large.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
+            {/* Grid Content */}
+            <SubcategoryGrid selectedCategoryId="electronics" />
           </div>
         </div>
       </section>
 
-      <Categories />
+      <PromoBanner 
+        title={promoConfig.title}
+        subtitle={promoConfig.subtitle}
+        discount={promoConfig.discount}
+        featuredText={promoConfig.featuredText}
+        freeShipping={promoConfig.freeShipping}
+        backgroundColor={promoConfig.backgroundColor}
+        products={promoBannerProducts}
+      />
       <FeaturedProducts />
-      <HomepageForm />
-      <Footer />
     </>
   );
 }

@@ -1,21 +1,6 @@
 import Link from "next/link";
-
-const products = [
-  { id: 1, name: "Smart Watch", price: 75, stock: 24 },
-  { id: 2, name: "Wireless Speaker", price: 48, stock: 17 },
-  { id: 3, name: "Gaming Chair", price: 129, stock: 8 },
-  { id: 4, name: "Fashion Sneakers", price: 62, stock: 13 },
-  { id: 5, name: "Plumber toolkit", price: 35, stock: 9 },
-  { id: 6, name: "Electrician starter kit", price: 42, stock: 11 },
-];
-
-const orders = [
-  { id: 14891, customer: "Ayesha Khan", total: 184.5, status: "Delivered", vendor: "Main Store" },
-  { id: 14892, customer: "Bilal Ahmed", total: 98.99, status: "Processing", vendor: "Electro Hub" },
-  { id: 14893, customer: "Sana Malik", total: 42.0, status: "Out for delivery", vendor: "Quick Meals" },
-  { id: 14894, customer: "Omar Shah", total: 229.0, status: "Processing", vendor: "Home Services" },
-  { id: 14895, customer: "Maya Ali", total: 58.75, status: "Delivered", vendor: "Style Shop" },
-];
+import { useOrders } from "@/components/OrderContext";
+import { getVendorProducts } from "@/components/store-data";
 
 const panels: Record<string, { title: string; description: string; actions: string[] }> = {
   admin: {
@@ -43,8 +28,9 @@ const panels: Record<string, { title: string; description: string; actions: stri
 export default function DashboardPage({ searchParams }: { searchParams?: { role?: string } }) {
   const role = (searchParams?.role || "").toLowerCase();
   const panel = panels[role] ?? null;
-  const vendorProducts = products.filter((product) => product.id <= 4);
-  const riderOrders = orders.filter((order) => order.status === "Processing" || order.status === "Out for delivery");
+  const { orders, processingOrders } = useOrders();
+  const vendorProducts = getVendorProducts();
+  const riderOrders = processingOrders;
 
   return (
     <main className="min-h-screen bg-slate-50 py-16">
@@ -106,7 +92,7 @@ export default function DashboardPage({ searchParams }: { searchParams?: { role?
                           <div>
                             <h3 className="text-lg font-semibold text-slate-900">{product.name}</h3>
                             <p className="mt-2 text-sm text-slate-600">Price: ${product.price.toFixed(2)}</p>
-                            <p className="mt-1 text-sm text-slate-600">Stock: {product.stock}</p>
+                            <p className="mt-1 text-sm text-slate-600">Vendor: {product.vendor}</p>
                           </div>
                           <span className="rounded-full bg-green-700 px-3 py-1 text-xs font-semibold text-white">Live</span>
                         </div>

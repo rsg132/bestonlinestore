@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import api from "@/lib/api";
 
 const roles = [
   { label: "Customer", value: "customer" },
@@ -18,9 +19,24 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("customer");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    router.push(`/dashboard?role=${encodeURIComponent(role)}`);
+    try {
+      const response = await api.post("/register", {
+        name,
+        email,
+        password,
+        password_confirmation: password,
+        role: role === "vendor" ? "vendor" : "customer",
+      });
+
+      localStorage.setItem("auth_token", response.data.token);
+      localStorage.setItem("user_role", response.data.user.role);
+      router.push(response.data.user.role === "vendor" ? "/sell" : "/");
+    } catch (error) {
+      alert("Unable to create your account. Please check your details and try again.");
+      console.error(error);
+    }
   }
 
   return (

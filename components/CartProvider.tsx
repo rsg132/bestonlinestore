@@ -2,86 +2,219 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-type CartItem = {
+export interface CartItem {
   id: number;
   name: string;
   price: number;
+  vendor: string;
+  image: string;
   quantity: number;
-};
-
-type CartContextValue = {
-  items: CartItem[];
-  total: number;
-  adminEmail: string;
-  addItem: (item: Omit<CartItem, "quantity">) => void;
-  removeItem: (id: number) => void;
-  clearCart: () => void;
-};
-
-const CartContext = createContext<CartContextValue | undefined>(undefined);
-const ADMIN_EMAIL = "bestonlinestore998@gmail.com";
-
-function getInitialCart() {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem("bestonlinestore-cart");
-    return raw ? (JSON.parse(raw) as CartItem[]) : [];
-  } catch {
-    return [];
-  }
 }
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+type CartContextType = {
+  items: CartItem[];
+  total: number;
+  isCartOpen: boolean;
+
+  addItem: (item: Omit<CartItem, "quantity">) => void;
+
+  removeItem: (id: number) => void;
+
+  increaseQuantity: (id: number) => void;
+
+  decreaseQuantity: (id: number) => void;
+
+  clearCart: () => void;
+
+  openCart: () => void;
+
+  closeCart: () => void;
+};
+
+const CartContext = createContext<CartContextType | null>(null);
+
+export function CartProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
-    setItems(getInitialCart());
+
+    const cart = localStorage.getItem("cart");
+
+    if (cart) {
+      setItems(JSON.parse(cart));
+    }
+
   }, []);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("bestonlinestore-cart", JSON.stringify(items));
-    }
+
+    localStorage.setItem("cart", JSON.stringify(items));
+
   }, [items]);
 
-  const addItem = (item: Omit<CartItem, "quantity">) => {
+  function addItem(item: Omit<CartItem, "quantity">) {
+
+    setIsCartOpen(true);
+
     setItems((current) => {
-      const existing = current.find((cartItem) => cartItem.id === item.id);
-      if (existing) {
-        return current.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        );
+
+      const exists = current.find((i) => i.id === item.id);
+
+      if (exists) {
+
+        const updatedItem = {
+          ...exists,
+          quantity: exists.quantity + 1,
+        };
+
+        return [
+          updatedItem,
+          ...current.filter((i) => i.id !== item.id),
+        ];
+
       }
-      return [...current, { ...item, quantity: 1 }];
+
+      return [
+
+        {
+          ...item,
+          quantity: 1,
+        },
+
+        ...current,
+
+      ];
+
     });
-  };
 
-  const removeItem = (id: number) => {
-    setItems((current) => current.filter((item) => item.id !== id));
-  };
+  }
 
-  const clearCart = () => {
+  function removeItem(id: number) {
+
+    setItems((current) =>
+      current.filter((item) => item.id !== id)
+    );
+
+  }
+
+  function increaseQuantity(id: number) {
+
+    setItems((current) =>
+      current.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: item.quantity + 1,
+            }
+          : item
+      )
+    );
+
+  }
+
+  function decreaseQuantity(id: number) {
+
+    setItems((current) =>
+      current
+        .map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                quantity: item.quantity - 1,
+              }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+
+  }
+
+  function clearCart() {
+
     setItems([]);
-  };
 
-  const total = useMemo(
-    () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    [items]
-  );
+  }
+
+  function openCart() {
+
+    setIsCartOpen(true);
+
+  }
+
+  function closeCart() {
+
+    setIsCartOpen(false);
+
+  }
+
+  const total = useMemo(() => {
+
+    return items.reduce(
+
+      (sum, item) =>
+
+        sum + item.price * item.quantity,
+
+      0
+
+    );
+
+  }, [items]);
 
   return (
-    <CartContext.Provider value={{ items, total, adminEmail: ADMIN_EMAIL, addItem, removeItem, clearCart }}>
+
+    <CartContext.Provider
+
+      value={{
+
+        items,
+
+        total,
+
+        isCartOpen,
+
+        addItem,
+
+        removeItem,
+
+        increaseQuantity,
+
+        decreaseQuantity,
+
+        clearCart,
+
+        openCart,
+
+        closeCart,
+
+      }}
+
+    >
+
       {children}
+
     </CartContext.Provider>
+
   );
+
 }
 
 export function useCart() {
+
   const context = useContext(CartContext);
+
   if (!context) {
-    throw new Error("useCart must be used within CartProvider");
+
+    throw new Error("useCart must be used inside CartProvider");
+
   }
+
   return context;
+
 }

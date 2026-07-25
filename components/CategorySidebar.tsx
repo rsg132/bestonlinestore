@@ -1,0 +1,93 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { categoriesData } from "./categories-data";
+
+type CategorySidebarProps = {
+  selectedCategory?: string;
+  onCategorySelect?: (slug: string) => void;
+};
+
+export default function CategorySidebar({ selectedCategory, onCategorySelect }: CategorySidebarProps) {
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories((prev) =>
+      prev.includes(categoryId) ? prev.filter((id) => id !== categoryId) : [...prev, categoryId]
+    );
+  };
+
+  return (
+    <aside className="w-full sm:w-60 md:w-64 bg-white border-r border-gray-200 overflow-y-auto">
+      <div className="p-4">
+        <h2 className="text-lg font-bold text-gray-900 mb-4">Categories</h2>
+
+        <div className="space-y-1">
+          {categoriesData.map((category) => {
+            const isExpanded = expandedCategories.includes(category.id);
+
+            return (
+              <div key={category.id}>
+                {/* Main Category */}
+                <button
+                  onClick={() => {
+                    toggleCategory(category.id);
+                    onCategorySelect?.(category.slug);
+                  }}
+                  className={`w-full text-left px-3 py-3 rounded-lg flex items-center justify-between font-medium transition-all ${
+                    selectedCategory === category.slug
+                      ? "bg-orange-100 text-orange-700"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="text-xl">{category.icon}</span>
+                    <span>{category.name}</span>
+                  </span>
+                  <svg
+                    className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
+                </button>
+
+                {/* Subcategories - Dropdown */}
+                {isExpanded && (
+                  <div className="pl-6 mt-1 space-y-1 border-l-2 border-gray-200">
+                    {category.subcategories.map((subcategory) => (
+                      <Link
+                        key={subcategory.id}
+                        href={`/categories?subcategory=${subcategory.slug}`}
+                        onClick={() => onCategorySelect?.(subcategory.slug)}
+                        className={`block px-3 py-2 rounded-lg text-sm transition-all ${
+                          selectedCategory === subcategory.slug
+                            ? "bg-orange-50 text-orange-600 font-medium"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        }`}
+                      >
+                        <span className="inline-block mr-2">{subcategory.icon}</span>
+                        {subcategory.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* View All Categories Link */}
+        <Link
+          href="/categories"
+          className="block mt-6 px-3 py-2 text-center bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors"
+        >
+          View All Categories
+        </Link>
+      </div>
+    </aside>
+  );
+}

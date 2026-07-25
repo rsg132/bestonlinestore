@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { CartProvider } from "@/components/CartProvider";
-import FloatingCartPreview from "@/components/FloatingCartPreview";
+import { OrderProvider } from "@/components/OrderContext";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,6 +20,12 @@ export const metadata: Metadata = {
   description: "Best Online Store marketplace for trusted products, fast checkout, and easy ordering.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,10 +37,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <CartProvider>
-          {children}
-          <FloatingCartPreview />
-        </CartProvider>
+        <OrderProvider>
+          <CartProvider>
+            <Navbar />
+            {children}
+          </CartProvider>
+        </OrderProvider>
       </body>
     </html>
   );
