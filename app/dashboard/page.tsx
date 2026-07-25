@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useOrders } from "@/components/OrderContext";
 import { getVendorProducts } from "@/components/store-data";
