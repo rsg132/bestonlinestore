@@ -21,24 +21,7 @@ export default function SubcategoryGrid({ selectedCategoryId }: SubcategoryGridP
         <p className="text-gray-600">Browse our collection of {selectedCategory.name.toLowerCase()}</p>
       </div>
 
-      {/* Subcategories Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
-        {selectedCategory.subcategories.map((subcategory) => (
-          <Link
-            key={subcategory.id}
-            href={`/categories?subcategory=${subcategory.slug}`}
-            className="group"
-          >
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-3 sm:p-4 text-center hover:shadow-md transition-all duration-300 border border-orange-200 hover:border-orange-400">
-              <div className="text-3xl sm:text-4xl mb-2 inline-block">{subcategory.icon}</div>
-              <h3 className="font-semibold text-gray-900 text-xs sm:text-sm group-hover:text-orange-600 transition-colors line-clamp-2">
-                {subcategory.name}
-              </h3>
-              <p className="text-xs text-gray-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Shop →</p>
-            </div>
-          </Link>
-        ))}
-      </div>
+
     </div>
   );
 }
