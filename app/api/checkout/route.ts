@@ -5,14 +5,27 @@ const LARAVEL_BACKEND_URL = process.env.LARAVEL_BACKEND_URL || "http://127.0.0.1
 export async function POST(request: Request) {
   const data = await request.json();
 
+  // Transform frontend data to backend format
+  const backendData = {
+    customer_name: data.customer_name,
+    customer_email: data.customer_email,
+    customer_phone: data.customer_phone,
+    total: data.total,
+    items: (data.items || []).map((item: any) => ({
+      product_id: item.id, // Transform id to product_id
+      quantity: item.quantity,
+      price: item.price,
+    })),
+  };
+
   let response;
   try {
-    response = await fetch(`${LARAVEL_BACKEND_URL}/checkout`, {
+    response = await fetch(`${LARAVEL_BACKEND_URL}/api/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(backendData),
     });
   } catch (error) {
     return NextResponse.json(
@@ -26,8 +39,8 @@ export async function POST(request: Request) {
 
   const responseText = await response.text();
 
-console.log("Laravel Status:", response.status);
-console.log("Laravel Response:", responseText);
+  console.log("Laravel Status:", response.status);
+  console.log("Laravel Response:", responseText);
   let payload;
   try {
     payload = JSON.parse(responseText);
