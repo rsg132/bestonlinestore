@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function ProductDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Electronics");
 
   const productCategories = [
     {
@@ -34,13 +34,9 @@ export default function ProductDropdown() {
     },
   ];
 
-  const toggleCategory = (category: string) => {
-    setExpandedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
-  };
+  const selectedCategoryData = productCategories.find(
+    (cat) => cat.category === selectedCategory
+  );
 
   return (
     <div className="relative">
@@ -68,52 +64,49 @@ export default function ProductDropdown() {
             {/* Title */}
             <h3 className="text-xl font-bold text-white mb-6">Shop by Category</h3>
 
-            {/* Categories with collapsible products */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {productCategories.map((section) => {
-                const isExpanded = expandedCategories.includes(section.category);
-                return (
-                  <div
-                    key={section.category}
-                    className="bg-slate-800/50 rounded-lg overflow-hidden border border-slate-700/50 hover:border-emerald-400/30 transition"
+            {/* Two Column Layout: Categories on Left, Products on Right */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Left Column - Categories List */}
+              <div className="space-y-2 border-r border-slate-700/50 pr-6">
+                {productCategories.map((category) => (
+                  <button
+                    key={category.category}
+                    onClick={() => setSelectedCategory(category.category)}
+                    className={`w-full text-left px-4 py-2.5 rounded-lg transition font-medium ${
+                      selectedCategory === category.category
+                        ? "bg-emerald-600 text-white"
+                        : "text-slate-300 hover:text-emerald-300 hover:bg-slate-700/50"
+                    }`}
                   >
-                    {/* Category Header - Clickable */}
-                    <button
-                      onClick={() => toggleCategory(section.category)}
-                      className="w-full flex items-center justify-between px-4 py-3 font-bold text-emerald-400 text-base uppercase tracking-wide hover:bg-slate-700/50 transition"
-                    >
-                      <span>{section.category}</span>
-                      <span
-                        className={`transition-transform duration-300 ${
-                          isExpanded ? "rotate-180" : ""
-                        }`}
-                      >
-                        ▼
-                      </span>
-                    </button>
+                    {category.category}
+                  </button>
+                ))}
+              </div>
 
-                    {/* Product Links - Hidden by default, shown when expanded */}
-                    {isExpanded && (
-                      <div className="border-t border-slate-700/50 bg-slate-800/30 px-4 py-3">
-                        <ul className="space-y-2.5">
-                          {section.products.map((product) => (
-                            <li key={product}>
-                              <Link
-                                href={`/products?search=${encodeURIComponent(
-                                  product
-                                )}`}
-                                className="text-sm text-slate-300 transition hover:text-emerald-300 hover:translate-x-1 inline-block"
-                              >
-                                {product}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+              {/* Right Column - Products for Selected Category */}
+              <div className="md:col-span-2">
+                {selectedCategoryData && (
+                  <div>
+                    <h4 className="text-emerald-400 font-bold text-base uppercase mb-4">
+                      {selectedCategoryData.category}
+                    </h4>
+                    <ul className="grid grid-cols-2 gap-3">
+                      {selectedCategoryData.products.map((product) => (
+                        <li key={product}>
+                          <Link
+                            href={`/products?search=${encodeURIComponent(
+                              product
+                            )}`}
+                            className="text-sm text-slate-300 transition hover:text-emerald-300 hover:translate-x-1 inline-block"
+                          >
+                            {product}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                );
-              })}
+                )}
+              </div>
             </div>
 
             {/* Bottom Action */}
