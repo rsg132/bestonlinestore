@@ -60,7 +60,7 @@ export default function ProductDropdown() {
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
         >
-          <div className="mx-auto max-w-7xl px-3 sm:px-4 py-3">
+          <div className="mx-auto max-w-7xl pr-3 sm:pr-4 pl-0 py-3">
             {/* Title */}
             <h3 className="text-lg font-bold text-white mb-3">Shop by Category</h3>
 
