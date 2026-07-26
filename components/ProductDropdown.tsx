@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export default function ProductDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
   const productCategories = [
     {
@@ -33,6 +34,14 @@ export default function ProductDropdown() {
     },
   ];
 
+  const toggleCategory = (category: string) => {
+    setExpandedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
+
   return (
     <div className="relative">
       {/* Shop Button */}
@@ -59,30 +68,52 @@ export default function ProductDropdown() {
             {/* Title */}
             <h3 className="text-xl font-bold text-white mb-6">Shop by Category</h3>
 
-            {/* Categories with nested products */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {productCategories.map((section) => (
-                <div key={section.category} className="space-y-4">
-                  {/* Category Header */}
-                  <h4 className="font-bold text-emerald-400 text-base uppercase tracking-wide border-b border-emerald-400/30 pb-2">
-                    {section.category}
-                  </h4>
+            {/* Categories with collapsible products */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {productCategories.map((section) => {
+                const isExpanded = expandedCategories.includes(section.category);
+                return (
+                  <div
+                    key={section.category}
+                    className="bg-slate-800/50 rounded-lg overflow-hidden border border-slate-700/50 hover:border-emerald-400/30 transition"
+                  >
+                    {/* Category Header - Clickable */}
+                    <button
+                      onClick={() => toggleCategory(section.category)}
+                      className="w-full flex items-center justify-between px-4 py-3 font-bold text-emerald-400 text-base uppercase tracking-wide hover:bg-slate-700/50 transition"
+                    >
+                      <span>{section.category}</span>
+                      <span
+                        className={`transition-transform duration-300 ${
+                          isExpanded ? "rotate-180" : ""
+                        }`}
+                      >
+                        ▼
+                      </span>
+                    </button>
 
-                  {/* Product Links under category */}
-                  <ul className="space-y-2 pl-3 border-l-2 border-emerald-400/20">
-                    {section.products.map((product) => (
-                      <li key={product}>
-                        <Link
-                          href={`/products?search=${encodeURIComponent(product)}`}
-                          className="text-sm text-slate-300 transition hover:text-emerald-300 hover:translate-x-1 inline-block"
-                        >
-                          {product}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+                    {/* Product Links - Hidden by default, shown when expanded */}
+                    {isExpanded && (
+                      <div className="border-t border-slate-700/50 bg-slate-800/30 px-4 py-3">
+                        <ul className="space-y-2.5">
+                          {section.products.map((product) => (
+                            <li key={product}>
+                              <Link
+                                href={`/products?search=${encodeURIComponent(
+                                  product
+                                )}`}
+                                className="text-sm text-slate-300 transition hover:text-emerald-300 hover:translate-x-1 inline-block"
+                              >
+                                {product}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Bottom Action */}
@@ -92,7 +123,9 @@ export default function ProductDropdown() {
                 className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition"
               >
                 View All Products
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
               </Link>
             </div>
           </div>
