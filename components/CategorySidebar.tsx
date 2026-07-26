@@ -7,9 +7,11 @@ import { categoriesData } from "./categories-data";
 type CategorySidebarProps = {
   selectedCategory?: string;
   onCategorySelect?: (slug: string) => void;
+  isMobileOpen?: boolean;
+  onMobileClose?: () => void;
 };
 
-export default function CategorySidebar({ selectedCategory, onCategorySelect }: CategorySidebarProps) {
+export default function CategorySidebar({ selectedCategory, onCategorySelect, isMobileOpen, onMobileClose }: CategorySidebarProps) {
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
   const toggleCategory = (categoryId: string) => {
@@ -18,10 +20,28 @@ export default function CategorySidebar({ selectedCategory, onCategorySelect }: 
     );
   };
 
+  const handleCategoryClick = (slug: string) => {
+    onCategorySelect?.(slug);
+    onMobileClose?.();
+  };
+
   return (
-    <aside className="w-full sm:w-60 md:w-64 bg-white border-r border-gray-200 overflow-y-auto">
-      <div className="p-4">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Categories</h2>
+    <aside className={`fixed lg:static inset-0 z-40 lg:z-0 bg-white overflow-y-auto transition-opacity duration-300 ${
+      isMobileOpen ? 'opacity-100 visible' : 'lg:opacity-100 lg:visible opacity-0 invisible'
+    } lg:border-r border-gray-200 lg:w-72`}>
+      <div className="p-4 lg:p-6">
+        <div className="flex items-center justify-between mb-4 lg:mb-6">
+          <h2 className="text-lg font-bold text-gray-900">Categories</h2>
+          <button
+            onClick={onMobileClose}
+            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
+            aria-label="Close menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
 
         <div className="space-y-1">
           {categoriesData.map((category) => {
@@ -33,12 +53,12 @@ export default function CategorySidebar({ selectedCategory, onCategorySelect }: 
                 <button
                   onClick={() => {
                     toggleCategory(category.id);
-                    onCategorySelect?.(category.slug);
+                    handleCategoryClick(category.slug);
                   }}
                   className={`w-full text-left px-3 py-3 rounded-lg flex items-center justify-between font-medium transition-all ${
                     selectedCategory === category.slug
-                      ? "bg-orange-100 text-orange-700"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-orange-100 text-orange-700 border-l-4 border-orange-600"
+                      : "text-gray-700 hover:bg-gray-50 border-l-4 border-transparent"
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -62,11 +82,11 @@ export default function CategorySidebar({ selectedCategory, onCategorySelect }: 
                       <Link
                         key={subcategory.id}
                         href={`/categories?subcategory=${subcategory.slug}`}
-                        onClick={() => onCategorySelect?.(subcategory.slug)}
+                        onClick={() => handleCategoryClick(subcategory.slug)}
                         className={`block px-3 py-2 rounded-lg text-sm transition-all ${
                           selectedCategory === subcategory.slug
-                            ? "bg-orange-50 text-orange-600 font-medium"
-                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                            ? "bg-orange-50 text-orange-600 font-medium border-r-2 border-orange-600"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-r-2 border-transparent"
                         }`}
                       >
                         <span className="inline-block mr-2">{subcategory.icon}</span>

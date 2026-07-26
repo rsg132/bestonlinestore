@@ -1,8 +1,7 @@
 import Hero from "@/components/Hero";
 import PromoBanner from "@/components/PromoBanner";
 import FeaturedProducts from "@/components/FeaturedProducts";
-import CategorySidebar from "@/components/CategorySidebar";
-import SubcategoryGrid from "@/components/SubcategoryGrid";
+import CategoriesSection from "@/components/CategoriesSection";
 import { promoBannerProducts, promoConfig } from "@/components/promo-data";
 
 export default function Home() {
@@ -10,19 +9,8 @@ export default function Home() {
     <>
       <Hero />
       
-      {/* Categories Section with Sidebar */}
-      <section className="bg-gray-50 py-8 sm:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row gap-6">
-            {/* Sidebar - Hidden on mobile, visible from sm */}
-            <div className="hidden sm:block">
-              <CategorySidebar selectedCategory="electronics" />
-            </div>
-            {/* Grid Content */}
-            <SubcategoryGrid selectedCategoryId="electronics" />
-          </div>
-        </div>
-      </section>
+      {/* Categories Section - Responsive */}
+      <CategoriesSection />
 
       <PromoBanner 
         title={promoConfig.title}
