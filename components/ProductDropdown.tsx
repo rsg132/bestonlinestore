@@ -56,7 +56,7 @@ export default function ProductDropdown() {
       {/* Dropdown Menu */}
       {isOpen && (
         <div
-          className="absolute left-0 top-full mt-0 w-screen bg-slate-900/95 backdrop-blur-md border-t border-white/10 shadow-2xl z-50"
+          className="absolute left-0 top-full mt-0 w-screen bg-slate-900/95 backdrop-blur-md shadow-2xl z-50"
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
         >
