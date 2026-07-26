@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCart } from "@/components/CartProvider";
 import CartDrawer from "@/components/CartDrawer";
+import ProductDropdown from "@/components/ProductDropdown";
 import { useState } from "react";
 
 export default function Navbar() {
@@ -46,6 +47,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation - Hidden on medium screens and below */}
           <nav className="hidden gap-4 text-sm font-medium text-slate-100 lg:flex">
+            <ProductDropdown />
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href} className="transition hover:text-emerald-300">
                 {link.label}
