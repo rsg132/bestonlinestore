@@ -60,19 +60,19 @@ export default function ProductDropdown() {
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
         >
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
+          <div className="mx-auto max-w-7xl px-3 sm:px-4 py-3">
             {/* Title */}
-            <h3 className="text-xl font-bold text-white mb-6">Shop by Category</h3>
+            <h3 className="text-lg font-bold text-white mb-3">Shop by Category</h3>
 
             {/* Two Column Layout: Categories on Left, Products on Right */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Left Column - Categories List */}
-              <div className="space-y-2 border-r border-slate-700/50 pr-6">
+              <div className="space-y-1 border-r border-slate-700/50 pr-3">
                 {productCategories.map((category) => (
                   <button
                     key={category.category}
                     onClick={() => setSelectedCategory(category.category)}
-                    className={`w-full text-left px-4 py-2.5 rounded-lg transition font-medium ${
+                    className={`w-full text-left px-3 py-1.5 rounded text-sm transition font-medium ${
                       selectedCategory === category.category
                         ? "bg-emerald-600 text-white"
                         : "text-slate-300 hover:text-emerald-300 hover:bg-slate-700/50"
@@ -87,17 +87,17 @@ export default function ProductDropdown() {
               <div className="md:col-span-2">
                 {selectedCategoryData && (
                   <div>
-                    <h4 className="text-emerald-400 font-bold text-base uppercase mb-4">
+                    <h4 className="text-emerald-400 font-bold text-xs uppercase mb-2">
                       {selectedCategoryData.category}
                     </h4>
-                    <ul className="grid grid-cols-2 gap-3">
+                    <ul className="grid grid-cols-2 gap-2">
                       {selectedCategoryData.products.map((product) => (
                         <li key={product}>
                           <Link
                             href={`/products?search=${encodeURIComponent(
                               product
                             )}`}
-                            className="text-sm text-slate-300 transition hover:text-emerald-300 hover:translate-x-1 inline-block"
+                            className="text-xs text-slate-300 transition hover:text-emerald-300 hover:translate-x-1 inline-block"
                           >
                             {product}
                           </Link>
@@ -110,10 +110,10 @@ export default function ProductDropdown() {
             </div>
 
             {/* Bottom Action */}
-            <div className="mt-8 pt-6 border-t border-white/10">
+            <div className="mt-3 pt-3 border-t border-white/10">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded transition"
               >
                 View All Products
                 <span className="transition-transform duration-300 group-hover:translate-x-1">
