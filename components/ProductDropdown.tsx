@@ -59,22 +59,22 @@ export default function ProductDropdown() {
             {/* Title */}
             <h3 className="text-xl font-bold text-white mb-6">Shop by Category</h3>
 
-            {/* Multi-column Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {/* Categories with nested products */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {productCategories.map((section) => (
-                <div key={section.category} className="space-y-3">
-                  {/* Category Name */}
-                  <h4 className="font-semibold text-emerald-400 text-sm uppercase tracking-wide">
+                <div key={section.category} className="space-y-4">
+                  {/* Category Header */}
+                  <h4 className="font-bold text-emerald-400 text-base uppercase tracking-wide border-b border-emerald-400/30 pb-2">
                     {section.category}
                   </h4>
 
-                  {/* Product Links */}
-                  <ul className="space-y-2">
+                  {/* Product Links under category */}
+                  <ul className="space-y-2 pl-3 border-l-2 border-emerald-400/20">
                     {section.products.map((product) => (
                       <li key={product}>
                         <Link
                           href={`/products?search=${encodeURIComponent(product)}`}
-                          className="text-xs sm:text-sm text-slate-300 transition hover:text-white hover:translate-x-1 inline-block"
+                          className="text-sm text-slate-300 transition hover:text-emerald-300 hover:translate-x-1 inline-block"
                         >
                           {product}
                         </Link>
