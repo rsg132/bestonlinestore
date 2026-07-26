@@ -40,9 +40,12 @@ export default function ProductDropdown() {
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
-        className="px-4 py-2 text-sm font-medium text-slate-100 transition hover:text-emerald-300 hidden lg:inline-block"
+        className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-slate-100 transition hover:text-emerald-300 hidden lg:inline-flex"
       >
         SHOP
+        <span className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
+          ▼
+        </span>
       </button>
 
       {/* Dropdown Menu */}
@@ -86,9 +89,10 @@ export default function ProductDropdown() {
             <div className="mt-8 pt-6 border-t border-white/10">
               <Link
                 href="/products"
-                className="inline-block px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition"
               >
-                View All Products →
+                View All Products
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </Link>
             </div>
           </div>
