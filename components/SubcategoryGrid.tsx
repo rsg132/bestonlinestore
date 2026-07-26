@@ -39,27 +39,6 @@ export default function SubcategoryGrid({ selectedCategoryId }: SubcategoryGridP
           </Link>
         ))}
       </div>
-
-      {/* All Subcategories Overview */}
-      <div className="mt-10 pt-8 border-t border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">All Categories</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-          {categoriesData.map((category) => (
-            <Link
-              key={category.id}
-              href={`/categories?category=${category.slug}`}
-              className="group"
-            >
-              <div className="bg-white border-2 border-gray-200 rounded-lg p-4 text-center hover:border-orange-600 hover:shadow-md transition-all">
-                <div className="text-3xl mb-2">{category.icon}</div>
-                <p className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-orange-600">
-                  {category.name}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
